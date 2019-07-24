@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
@@ -15,6 +15,13 @@ class Register extends Component {
             password2: "",
             errors: {}
         };
+    }
+
+    componentDidMount() {
+        //if logged in & user navigates to register page, redirects them to dashboard
+        if (this.props.auth.isAuthenticated) {
+            this.props.history.push("/dashboard");
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -151,7 +158,7 @@ const mapStateToProps = state => ({
     errors: state.errors
 });
 
-export default connect (
+export default connect(
     mapStateToProps,
     { registerUser }
-) (withRouter(Register));
+)(withRouter(Register));
